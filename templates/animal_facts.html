@@ -7,7 +7,7 @@ content %}
 
 		<label>
 			Which animal do you want facts on?
-			<select name="animal">
+			<select name="animal" multiple>
 				{% for animal in animals %}
 				<option value="{{animal}}">{{animal}}</option>
 				{% endfor %}
@@ -20,12 +20,13 @@ content %}
 
 <section id="form_results">
 	<p>Here is your animal fact:</p>
-	<p>
-		{% if chosen_animal %}
-		<h4>Chosen Animal: <em>{{ chosen_animal }}</em></h4>
-		<em>{{ animal_fact }}</em>
-		{% endif %}
-	</p>
+	<dl>
+		{% if chosen_animal %} {% for animal in chosen_animal%}
+		<dt><b>{{ animal }}</b></dt>
+		{% for fact, content in animal_fact[animal].items() %}
+		<dd>- {{ fact }} : {{ content }}</dd>
+		{% endfor %} {% endfor %}{% endif %}
+	</dl>
 </section>
 
 {% endblock %}
