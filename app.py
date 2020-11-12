@@ -104,13 +104,13 @@ animal_to_fact = {
 @app.route("/animal_facts")
 def animal_facts():
     """Show a form to choose an animal and receive facts."""
+    # Substract the key values and put them into a list
     animal_list = animal_to_fact.keys()
     chosen_animal = request.args.getlist("animal")
-    if chosen_animal:
+    if chosen_animal:  # Create New Dictionaries with chosen animals
         animal_fact = {animal: animal_to_fact[animal] for animal in chosen_animal}
     else:
         animal_fact = None
-    print(animal_fact)
     context = {
         "animals": animal_list,
         "chosen_animal": chosen_animal,
@@ -164,32 +164,26 @@ def image_filter():
     filter_types = filter_types_dict.keys()
 
     if request.method == "POST":
-
-        # TODO: Get the user's chosen filter type (whichever one they chose in the form) and save
-        # as a variable
-        filter_type = ""
-
+        filter_type = request.form.get("filter_type")
         # Get the image file submitted by the user
         image = request.files.get("users_image")
 
-        # TODO: call `save_image()` on the image & the user's chosen filter type, save the returned
-        # value as the new file path
-
-        # TODO: Call `apply_filter()` on the file path & filter type
+        file_path = save_image(image, filter_type)
+        apply_filter(file_path, filter_type)
 
         image_url = f"/static/images/{image.filename}"
-
         context = {
-            # TODO: Add context variables here for:
-            # - The full list of filter types
-            # - The image URL
+            "filter_types": filter_types,
+            "image_url": image_url,
         }
 
         return render_template("image_filter.html", **context)
 
-    else:  # if it's a GET request
+    else:
+
         context = {
-            # TODO: Add context variable here for the full list of filter types
+            "filter_types": filter_types,
+            "image_url": None,
         }
         return render_template("image_filter.html", **context)
 
