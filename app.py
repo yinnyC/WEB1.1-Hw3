@@ -1,5 +1,5 @@
 from flask import Flask, request, render_template
-from PIL import Image, ImageFilter
+from PIL import Image, ImageFilter, ImageOps
 from pprint import PrettyPrinter
 import json
 import os
@@ -131,6 +131,7 @@ filter_types_dict = {
     "emboss": ImageFilter.EMBOSS,
     "sharpen": ImageFilter.SHARPEN,
     "smooth": ImageFilter.SMOOTH,
+    "grey scale": ImageOps.grayscale,
 }
 
 
@@ -154,7 +155,10 @@ def apply_filter(file_path, filter_name):
     """Apply a Pillow filter to a saved image."""
     i = Image.open(file_path)
     i.thumbnail((500, 500))
-    i = i.filter(filter_types_dict.get(filter_name))
+    if filter_name == "grey scale":
+        i = ImageOps.grayscale(i)
+    else:
+        i = i.filter(filter_types_dict.get(filter_name))
     i.save(file_path)
 
 
@@ -212,10 +216,6 @@ def gif_search():
                 "q": search_query,
                 "key": API_KEY,
                 "limit": quantity,
-                # TODO: Add in key-value pairs for:
-                # - 'q': the search query
-                # - 'key': the API key (defined above)
-                # - 'limit': the number of GIFs requested
             },
         )
 

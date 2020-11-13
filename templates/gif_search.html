@@ -29,8 +29,8 @@ content %}
 	<p>Here are your GIFs:</p>
 	{% if gifs %}
 	<p>
-		{% for gif in gifs %} <img src={{gif['media'][0]['gif']['url']}} alt="GIF"
-		/> {% endfor %}
+		{% for gif in gifs %} <img src={{gif['media'][0]['gif']['url']}} alt="GIF"/>
+		{% endfor %}
 	</p>
 	{% endif %}
 </section>
