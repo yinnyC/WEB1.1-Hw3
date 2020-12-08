@@ -63,7 +63,6 @@ def compliments_results():
             list_of_compliments, k=int(request.args.get("num_compliments"))
         ),
     }
-    print(context)
 
     return render_template("compliments_results.html", **context)
 
@@ -205,8 +204,6 @@ pp = PrettyPrinter(indent=4)
 def gif_search():
     """Show a form to search for GIFs and show resulting GIFs from Tenor API."""
     if request.method == "POST":
-        # TODO: Get the search query & number of GIFs requested by the user, store each as a
-        # variable
         search_query = request.form.get("search_query")
         quantity = request.form.get("quantity")
 
